@@ -52,7 +52,7 @@
         <button onclick="resetGame()">重新開始</button>
 
         <p id="message"></p>
-        <p>剩餘次數: <span id="attemptsLeft">7</span></p>
+        <p>已猜次數: <span id="attemptsCount">0</span></p> 
     </div>
 
     <script>
@@ -61,7 +61,7 @@
         let minRange = 1;
         let maxRange = 100;
         let attempts = 0;
-        const MAX_ATTEMPTS = 7; // 設定最大嘗試次數
+        // 移除了 MAX_ATTEMPTS 限制
 
         // --- 初始化函數 ---
         function initializeGame() {
@@ -75,7 +75,7 @@
             document.getElementById('min_range').textContent = minRange;
             document.getElementById('max_range').textContent = maxRange;
             document.getElementById('message').textContent = "開始遊戲！";
-            document.getElementById('attemptsLeft').textContent = MAX_ATTEMPTS;
+            document.getElementById('attemptsCount').textContent = attempts;
             document.getElementById('guessInput').value = '';
             document.getElementById('guessInput').disabled = false;
             document.querySelector('button[onclick="checkGuess()"]').disabled = false;
@@ -96,57 +96,4 @@
             }
 
             attempts++;
-            const attemptsLeftElement = document.getElementById('attemptsLeft');
-            attemptsLeftElement.textContent = MAX_ATTEMPTS - attempts;
-
-            if (guess === secretNumber) {
-                // 猜對了！
-                messageElement.textContent = `🎉 恭喜你！密碼就是 ${secretNumber}！你用了 ${attempts} 次猜對了！`;
-                gameOver(true);
-            } else if (guess < secretNumber) {
-                // 猜太低
-                messageElement.textContent = `太低了！密碼介於 ${guess + 1} 到 ${maxRange} 之間。`;
-                minRange = guess + 1;
-            } else if (guess > secretNumber) {
-                // 猜太高
-                messageElement.textContent = `太高了！密碼介於 ${minRange} 到 ${guess - 1} 之間。`;
-                maxRange = guess - 1;
-            }
-
-            // 更新範圍提示
-            document.getElementById('min_range').textContent = minRange;
-            document.getElementById('max_range').textContent = maxRange;
-
-            // 清空輸入框準備下次猜測
-            guessInput.value = '';
-
-            // 檢查是否超過最大嘗試次數
-            if (attempts >= MAX_ATTEMPTS && guess !== secretNumber) {
-                messageElement.textContent = `😭 遊戲結束！你用完了所有 ${MAX_ATTEMPTS} 次機會。密碼是 ${secretNumber}。`;
-                gameOver(false);
-            }
-        }
-
-        // --- 遊戲結束處理 ---
-        function gameOver(isWon) {
-            document.getElementById('guessInput').disabled = true;
-            document.querySelector('button[onclick="checkGuess()"]').disabled = true;
-            if (isWon) {
-                document.getElementById('message').style.color = 'green';
-            } else {
-                document.getElementById('message').style.color = 'red';
-            }
-        }
-
-        // --- 重新開始函數 ---
-        function resetGame() {
-            document.getElementById('message').style.color = 'black';
-            initializeGame();
-        }
-
-        // 頁面加載完成後自動開始遊戲
-        window.onload = initializeGame;
-    </script>
-
-</body>
-</html>
+            const attemptsCountElement =
